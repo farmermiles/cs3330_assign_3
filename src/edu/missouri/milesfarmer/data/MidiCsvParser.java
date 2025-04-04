@@ -1,5 +1,6 @@
 package edu.missouri.milesfarmer.data;
 
+import javax.sound.midi.ShortMessage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,6 +26,11 @@ public class MidiCsvParser {
         while (reader.hasNextLine()) {
             String line = reader.nextLine();
             String[] tokens = line.split(",");
+
+            if (tokens.length < 6) {
+                continue;
+            }
+
             int startEndTick, channel, note, velocity, instrument;
             boolean noteOn;
 
@@ -48,7 +54,10 @@ public class MidiCsvParser {
                 throw new RuntimeException();
             }
 
-            eventDatas.add(new MidiEventData(startEndTick, velocity, note, channel, noteOn ? 1 : 0, instrument));
+            eventDatas.add(new MidiEventData(
+                    startEndTick, velocity, note, channel,
+                    noteOn ? ShortMessage.NOTE_ON : ShortMessage.NOTE_OFF,
+                    instrument));
         }
 
         return eventDatas;

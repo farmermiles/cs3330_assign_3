@@ -33,9 +33,9 @@ public class Main {
             PitchStrategy pitchStrategy = new HigherPitchStrategy();
 
             for (MidiEventData event : midiEvents) {
-                int modifiedNote = pitchStrategy.modifyPitch(event.getNote());
-
-                modifiedNote = pitchStrategy.modifyPitch(modifiedNote);
+                int modifiedNote = event.getNote();
+                // int modifiedNote = pitchStrategy.modifyPitch(event.getNote());
+                // modifiedNote = pitchStrategy.modifyPitch(modifiedNote);
 
                 if (event.getNoteOnOff() == ShortMessage.NOTE_ON) {
                     track.add(factory.createNoteOn(event.getStartEndTick(), modifiedNote, event.getVelocity(), event.getChannel()));

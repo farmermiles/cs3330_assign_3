@@ -7,7 +7,15 @@ import javax.sound.midi.Track;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A concrete strategy to change the instrument to electric bass guitar.
+ */
 public class ElectricBassGuitarStrategy implements InstrumentStrategy {
+    /**
+     * Apply this the electric bass guitar instrument to the given channel on the given track.
+     * @param track the track on which to apply the instrument
+     * @param channel the channel for which the instrument is changed
+     */
     @Override
     public void applyInstrument(Track track, int channel) {
         try {

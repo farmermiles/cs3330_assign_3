@@ -16,10 +16,29 @@ import edu.missouri.milesfarmer.pitch.PitchStrategy;
 import javax.sound.midi.*;
 import java.util.List;
 
+
+// -------------------------------------
+// The song is Bad Guy by Billie Eilish.
+// -------------------------------------
+
+/**
+ * The main class that drives the testing of the program. This is directly based on the example provided in the
+ * assignment instructions, with minor modifications for my own testing.
+ */
 public class Main {
+    /**
+     * The main method that drives testing of the program. Parses in a MIDI CSV file, utilizes the components created
+     * in this assignment, and plays the resulting notes via Java's MIDI library.
+     * @param args unused.
+     */
     public static void main(String[] args) {
         try {
             List<MidiEventData> midiEvents = MidiCsvParser.parseCsv("./mystery_song.csv");
+
+            if (midiEvents == null || midiEvents.isEmpty()) {
+                throw new RuntimeException("MIDI CSV parsing error. Exiting.");
+            }
+
             Sequence sequence = new Sequence(Sequence.PPQ, 384);
             Track track = sequence.createTrack();
 

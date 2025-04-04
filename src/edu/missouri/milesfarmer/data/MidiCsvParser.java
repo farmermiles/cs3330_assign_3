@@ -7,10 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Parser for MIDI files.
+ */
 public class MidiCsvParser {
     private static String noteOnKey = "Note_on_c";
     private static String noteOffKey = "Note_off_c";
 
+    /**
+     * Parse the given CSV file into intermediate MIDI Event Data objects. Must be of the column format:
+     *      startEndTick, Note on/off, channel, note, velocity , instrument
+     *
+     * This method does not throw any errors, but will return null if any are encountered.
+     *
+     * @param path the string path to the file (accepts relative paths).
+     * @return the list of MIDI Event Data points. Null if there was a parsing error.
+     */
     public static List<MidiEventData> parseCsv(String path) {
         List<MidiEventData> eventDatas = new ArrayList<MidiEventData>();
 
@@ -19,9 +31,8 @@ public class MidiCsvParser {
         try {
             reader = new Scanner(csvFile);
         } catch (FileNotFoundException e) {
-            // This is graceful enough for my purposes. If the CSV can't be found, the program cannot run correctly.
             System.err.println("CSV input file not found!");
-            throw new RuntimeException(e);
+            return null;
         }
         while (reader.hasNextLine()) {
             String line = reader.nextLine();
@@ -42,7 +53,7 @@ public class MidiCsvParser {
                 instrument = Integer.parseInt(tokens[5]);
             } catch (NumberFormatException e) {
                 System.err.println("Error parsing ints on the following line: " + line);
-                throw new RuntimeException(e);
+                return null;
             }
 
             if (tokens[1].strip().equals(noteOnKey)) {
@@ -51,7 +62,7 @@ public class MidiCsvParser {
                 noteOn = false;
             } else {
                 System.err.println("Error parsing the note on/off type on the following line: " + line);
-                throw new RuntimeException();
+                return null;
             }
 
             eventDatas.add(new MidiEventData(

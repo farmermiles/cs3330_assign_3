@@ -4,7 +4,21 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiEvent;
 import javax.sound.midi.ShortMessage;
 
+/**
+ * A factory that produces notes in a legato style. Notes are extended in length by 80 ticks.
+ *
+ * It is NOT intended that this class be instantiated directly. Rather, you should attain it via the abstract factory.
+ */
 public class LegatoMidiEventFactory implements MidiEventFactory {
+    /**
+     * Create a note on event.
+     * @param tick the tick for the note to start on
+     * @param note the desired note
+     * @param velocity the note's velocity
+     * @param channel the channel on which the note plays
+     * @return A MidiEvent object that is ready for use in Java's MIDI library.
+     * @throws InvalidMidiDataException thrown if there is an error in creating the MIDI event objects
+     */
     @Override
     public MidiEvent createNoteOn(int tick, int note, int velocity, int channel) throws InvalidMidiDataException {
         ShortMessage msg = new ShortMessage();
@@ -12,6 +26,14 @@ public class LegatoMidiEventFactory implements MidiEventFactory {
         return new MidiEvent(msg, tick);
     }
 
+    /**
+     * Create a note off event. The note is extended by 80 ticks.
+     * @param tick the tick for the note to end on
+     * @param note the desired note
+     * @param channel the channel on which the note plays
+     * @return A MidiEvent object that is ready for use in Java's MIDI library.
+     * @throws InvalidMidiDataException thrown if there is an error in creating the MIDI event objects
+     */
     @Override
     public MidiEvent createNoteOff(int tick, int note, int channel) throws InvalidMidiDataException {
         ShortMessage msg = new ShortMessage();
